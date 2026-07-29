@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - School Pro Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#1E40AF', secondary: '#3B82F6' } } } }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-primary text-white p-6">
+            <h1 class="text-2xl font-bold mb-10">School Pro</h1>
+            <nav class="space-y-4">
+                <a href="#" class="block py-2 px-4 rounded bg-secondary">Dashboard</a>
+                <a href="#" class="block py-2 px-4 hover:bg-blue-800">Siswa</a>
+                <a href="#" class="block py-2 px-4 hover:bg-blue-800">Guru</a>
+                <a href="#" class="block py-2 px-4 hover:bg-blue-800">Absensi</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Ringkasan Data</h2>
+                <button class="bg-primary text-white px-4 py-2 rounded shadow">Tambah Data</button>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-gray-500">Total Siswa</p>
+                    <h3 class="text-3xl font-bold text-primary">1,240</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-gray-500">Total Guru</p>
+                    <h3 class="text-3xl font-bold text-primary">85</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <p class="text-gray-500">Kehadiran Hari Ini</p>
+                    <h3 class="text-3xl font-bold text-primary">98%</h3>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 class="text-xl font-bold mb-4">Data Terbaru</h3>
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-400 border-b">
+                            <th class="pb-3">Nama</th>
+                            <th class="pb-3">NIS/NIP</th>
+                            <th class="pb-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table">
+                        <!-- JS inject data -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script>
+        async function fetchData() {
+            const res = await fetch('/api/data');
+            const data = await res.json();
+            const container = document.getElementById('data-table');
+            data.students.forEach(s => {
+                container.innerHTML += `<tr class="border-b">
+                    <td class="py-3">${s.name}</td>
+                    <td class="py-3">${s.nis}</td>
+                    <td class="py-3"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Aktif</span></td>
+                </tr>`;
+            });
+        }
+        fetchData();
+    </script>
+</body>
+</html>
